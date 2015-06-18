@@ -11,9 +11,9 @@
 
 #ifdef __AVR_ATmega32__
 
-#define AT_SET_ENABLE_INT0		(GICR |= (1 << INT0))
-#define AT_SET_ENABLE_INT1 		(GICR |= (1 << INT1))
-#define AT_SET_ENABLE_INT2		(GICR |= (1 << INT2))
+#define AT_SET_ENABLE_INT0		{ GICR |= (1 << INT0); DDRD |= (0 << PD2); }
+#define AT_SET_ENABLE_INT1 		{ GICR |= (1 << INT1); DDRD |= (0 << PD3); }
+#define AT_SET_ENABLE_INT2		{ GICR |= (1 << INT2); DDRB |= (0 << PB2); }
 
 //int0 sense control
 #define AT_INT0_SENSE_LOW		(MCUCR |= ((0 << ISC01) | (0 << ISC00)))
