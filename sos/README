@@ -1,0 +1,49 @@
+simple OS for AVR microcontroller
+
+CURRENT VERSION :- 1
+
+default stack size: 128 bytes	(this needs to be >32, to save h/w context)
+[kernel stack size: 64 bytes]	//TODO
+max no. processes: 7 + 1 idle
+//max no. routines: 8 (task without stack)        //idle task stack is used for routines
+
+
+version 1:
+        assumptions:
+                1. no explicit malloc: no malloc is allowed, all data members including stack need to be created statically, 
+		   except local (stack) variables, other variables need to be either global or static.
+		2. only one task/priority allowed (no os internal chks to ensure multiple tasks registering under same prio).
+                3. no IPC (semaphores) in this version :(
+version 1.1:
+	1. addition of IPC (sema).
+	2. priority inversion.
+
+version 2:
+        improvements:
+                1. support for malloc
+
+
+OS interface:
+        1. os_init	//__attribute__((constructor)) no explicit invocation
+        2. os_task_create
+        3. os_start
+        3. os_sem_init
+        4. os_sem_get
+        5. os_sem_put
+
+Priority Inversion:
+for (i = 0; i < MAX_TASK; i++) {
+	if (run_queue[i] && run_queue[i].state == READY) {
+		if (current->elev_prio > i)		// <-- x
+			//switch current task
+	}
+}
+
+problem in (x),
+if the condition is true, in next tick, potential risk of priority inversion!!!
+
+
+The Startup Time is just how long the clock source needs to calm down from when power is first applied. Always go with the 
+longest setting 14CK + 65ms unless you know for a fact your clock source needs less time and 65ms is too long to wait. 
+
+
