@@ -16,16 +16,42 @@ void os_mi2c_init(void)
 
 uint8_t os_mi2c_start(uint8_t addr)
 {
+	TWCR = ((1 << TWINT) | (1 << TWSTA) | (1 << TWEN));
+	TW_BUSY_WAIT;
+
+	if ((TWSR != TW_START) && (TWSR != TW_REP_START))
+		return 1;
+
+	TWDR = addr;
+	TWCR = ((1 << TWINT) | (1 << TWEN));
+	TW_BUSY_WAIT;
+
+	if ((TWSR != TW_MT_SLA_ACK) && (TWSR != TW_MR_SLA_ACK))
+		return 1;
+	return 0;
 }
 
 void os_mi2c_stop(void)
 {
+	TWCR = ((1 << TWINT) | (1 << TWSTO) | (1 << TWEN));
 }
 
 uint8_t os_mi2c_write(uint8_t data)
 {
+	TWDR = data;
+	TWCR = ((1 << TWINT) | (1 << TWEN));
+
+	TW_BUSY_WAIT;
+
+	if (TWSR != TW_MT_DATA_ACK)
+		return 1;
+	return 0;
 }
 
 uint8_t os_mi2c_read(void)
 {
+	TWCR = ((1 << TWINT) | (1 << TWEN) | (1 << TWEA));
+	TW_BUSY_WAIT;
+
+	return TWDR;
 }

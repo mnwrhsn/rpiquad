@@ -27,10 +27,10 @@
 #endif
 
 //o/p @ oc1a (pin pd5)
-extern void servo_setup_timer1_channel1(void);
+extern void servo_setup_timer1_channel1(uint8_t);
 
 //o/p @ oc1b (pin pd4)
-extern void servo_setup_timer1_channel2(void);
+extern void servo_setup_timer1_channel2(uint8_t);
 
 //expected value is 0 - 100
 extern void servo_set_timer1_channel1(uint8_t);

@@ -2,10 +2,8 @@
 #define __RRM_SOS_OS_CONFIG_H_
 
 #include <avr/io.h>
-#include <avr/signal.h>
 #include <avr/interrupt.h>
-#include <avr/delay.h>
-#include <avr/iom128.h>         //TODO whts this for??
+#include <util/delay.h>
 
 //http://www.nongnu.org/avr-libc/user-manual/FAQ.html
 

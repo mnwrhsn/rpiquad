@@ -1,3 +1,9 @@
+/*
+reading pwm values from turnigy 6XS receiver.
+TODO: duty period is some times more than 2000us
+need to consider timer overflow
+*/
+
 #include "../sos/rrm_config.h"
 #include "../sos/os_lcd.h"
 
