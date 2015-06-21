@@ -1,7 +1,7 @@
 #include "os_i2c_master.h"
 #include <util/twi.h>
 
-#define F_SCL           400000UL        //400KHz
+#define F_SCL           100000UL        //100KHz
 #define SCL_PRESCALAR   1
 #define TWBR_VAL        (((F_CPU / F_SCL) - 16) / 2)
 
@@ -48,9 +48,17 @@ uint8_t os_mi2c_write(uint8_t data)
 	return 0;
 }
 
-uint8_t os_mi2c_read(void)
+uint8_t os_mi2c_read_ack(void)
 {
 	TWCR = ((1 << TWINT) | (1 << TWEN) | (1 << TWEA));
+	TW_BUSY_WAIT;
+
+	return TWDR;
+}
+
+uint8_t os_mi2c_read_nack(void)
+{
+	TWCR = ((1 << TWINT) | (1 << TWEN));
 	TW_BUSY_WAIT;
 
 	return TWDR;

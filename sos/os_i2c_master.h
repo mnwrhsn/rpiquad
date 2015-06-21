@@ -13,7 +13,8 @@ extern uint8_t os_mi2c_start(uint8_t);
 extern void os_mi2c_stop(void);
 
 extern uint8_t os_mi2c_write(uint8_t);
-extern uint8_t os_mi2c_read(void);
+extern uint8_t os_mi2c_read_ack(void);
+extern uint8_t os_mi2c_read_nack(void);
 
 /*usage to read from some register,
 
