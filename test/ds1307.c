@@ -25,6 +25,28 @@ void ds1307_init(void)
 	os_mi2c_stop();
 }
 
+void ds1307_set_time(struct ds1307_time *t)
+{
+	os_mi2c_start(0xD0);
+	os_mi2c_write(0x00);
+
+	os_mi2c_write(DS1307_DEC2BCD(t->sec));
+	os_mi2c_write(DS1307_DEC2BCD(t->min));
+	os_mi2c_write(DS1307_DEC2BCD(t->hr));
+	os_mi2c_stop();
+}
+
+void ds1307_set_date(struct ds1307_date *t)
+{
+	os_mi2c_start(0xD0);
+	os_mi2c_write(0x04);
+
+	os_mi2c_write(DS1307_DEC2BCD(t->date));
+	os_mi2c_write(DS1307_DEC2BCD(t->month));
+	os_mi2c_write(DS1307_DEC2BCD(t->year));
+	os_mi2c_stop();
+}
+
 void ds1307_read_time(struct ds1307_time *t)
 {
 	os_mi2c_start(0xD0);
@@ -55,10 +77,23 @@ int main (void)
 {
 	struct ds1307_time mytime;
 	struct ds1307_date mydate;
+
+	mytime.sec = 45;
+	mytime.min = 54;
+	mytime.hr = 4;
+
+	mydate.date = 20;
+	mydate.month = 4;
+	mydate.year = 84;
+
+	cli();
 	lcd_n5110_init();
 	os_mi2c_init();
 
 	ds1307_init();
+
+	ds1307_set_time(&mytime);
+	ds1307_set_date(&mydate);
 
 	while (1) {
 		lcd_n5110_clear();
