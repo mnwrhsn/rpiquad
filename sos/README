@@ -7,6 +7,10 @@ default stack size: 128 bytes	(this needs to be >32, to save h/w context)
 max no. processes: 7 + 1 idle
 //max no. routines: 8 (task without stack)        //idle task stack is used for routines
 
+NOTE: timer0 (8-bit timer is being used internally for schedulling and timekeeping)
+
+Schedulling freq: 125Hz/250Hz
+
 
 version 1:
         assumptions:

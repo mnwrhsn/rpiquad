@@ -26,6 +26,7 @@ int main(void)
 {
 	asm volatile ("cli	");
 	AT_SET_ENABLE_INT0;
+	//AT_T0_OI_ENABLE;	//overflow
 	AT_INT0_SENSE_ANY;
 
 	AT_T1_PRESCALE8;

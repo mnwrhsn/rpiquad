@@ -1,5 +1,5 @@
 #include "../sos/rrm_config.h"
-#include "../sos/os_servo.h"
+#include "../sos/os_lib_servo.h"
 
 int main(void)
 {
