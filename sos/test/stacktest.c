@@ -2,6 +2,10 @@
 #include "../os_config.h"
 #include "../os_task.h"
 
+/*
+for checking task switching functionality
+*/
+
 #define MY_STACK_SIZE	128
 
 static uint8_t t1stack[MY_STACK_SIZE];

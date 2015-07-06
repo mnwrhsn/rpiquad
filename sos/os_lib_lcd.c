@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <avr/pgmspace.h>
 
-#include "os_lcd.h"
+#include "os_lib_lcd.h"
 
 // Alphabet lookup font
 // char 6x8 pixels, in 84x48..total 14x6 char

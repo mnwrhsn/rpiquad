@@ -1,6 +1,6 @@
 #include "../sos/rrm_config.h"
 #include "../sos/os_i2c_master.h"
-#include "../sos/os_lcd.h"
+#include "../sos/os_lib_lcd.h"
 
 struct ds1307_time {
 	uint8_t sec;

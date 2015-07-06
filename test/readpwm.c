@@ -5,7 +5,7 @@ need to consider timer overflow
 */
 
 #include "../sos/rrm_config.h"
-#include "../sos/os_lcd.h"
+#include "../sos/os_lib_lcd.h"
 
 volatile int32_t duty = 0;
 volatile int32_t spulse = 0;

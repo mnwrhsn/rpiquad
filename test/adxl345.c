@@ -1,6 +1,6 @@
 #include "../sos/rrm_config.h"
 #include "../sos/os_i2c_master.h"
-#include "../sos/os_lcd.h"
+#include "../sos/os_lib_lcd.h"
 
 volatile int16_t xdata = 0;
 volatile int16_t ydata = 0;
