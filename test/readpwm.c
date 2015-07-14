@@ -5,20 +5,19 @@ need to consider timer overflow
 */
 
 #include "../sos/rrm_config.h"
+#include "../sos/os_lib_servo.h"
 #include "../sos/os_lib_lcd.h"
 
 volatile int32_t duty = 0;
-volatile int32_t spulse = 0;
 volatile int32_t epulse = 0;
 
 ISR(INT0_vect)
 {
 	if (PORTD & PD2) {
-		spulse = TCNT1;
+		TCNT1 = 0;
 	} else {
 		epulse = TCNT1;
-		duty = epulse - spulse;
-		TCNT1 = 0;
+		duty = epulse % MAX_PULSE_WIDTH;
 	}
 }
 
@@ -26,7 +25,6 @@ int main(void)
 {
 	asm volatile ("cli	");
 	AT_SET_ENABLE_INT0;
-	//AT_T0_OI_ENABLE;	//overflow
 	AT_INT0_SENSE_ANY;
 
 	AT_T1_PRESCALE8;

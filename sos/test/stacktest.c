@@ -4,6 +4,8 @@
 
 /*
 for checking task switching functionality
+	task 1: blink led from 0 -> 3
+	task 2: blink led from 4 -> 7
 */
 
 #define MY_STACK_SIZE	128
@@ -34,5 +36,7 @@ void blinker2(void *data)
 int main(void)
 {
 	cli();
+
+	sei();
 	return 0;
 }

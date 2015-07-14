@@ -3,12 +3,16 @@ readpwm_SRC := readpwm.c ../sos/os_lib_lcd.c
 adxl345_SRC := adxl345.c ../sos/os_i2c_master.c ../sos/os_lib_lcd.c
 servotest_SRC := servotest.c ../sos/os_lib_servo.c
 ds1307_SRC := ds1307.c ../sos/os_i2c_master.c ../sos/os_lib_lcd.c
+bmotor_SRC := bmotor.c ../sos/os_lib_lcd.c
 
 
-all: readpwm.hex adxl345.hex servotest.hex ds1307.hex
+all: readpwm.hex adxl345.hex servotest.hex ds1307.hex bmotor.hex
 
 readpwm.hex: readpwm.elf
 	avr-objcopy -j .text -j .data -O ihex readpwm.elf readpwm.hex
+
+bmotor.hex: bmotor.elf
+	avr-objcopy -j .text -j .data -O ihex bmotor.elf bmotor.hex
 
 adxl345.hex: adxl345.elf
 	avr-objcopy -j .text -j .data -O ihex adxl345.elf adxl345.hex
@@ -21,6 +25,9 @@ servotest.hex: servotest.elf
 
 readpwm.elf: $(readpwm_SRC)
 	avr-gcc -Os -mmcu=$(AVRMCU) -o readpwm.elf $(readpwm_SRC)
+
+bmotor.elf: $(bmotor_SRC)
+	avr-gcc -Os -mmcu=$(AVRMCU) -o bmotor.elf $(bmotor_SRC)
 
 adxl345.elf: $(adxl345_SRC)
 	avr-gcc -Os -mmcu=$(AVRMCU) -o adxl345.elf $(adxl345_SRC)
