@@ -3,7 +3,7 @@ readpwm_SRC := readpwm.c ../sos/os_lib_lcd.c
 adxl345_SRC := adxl345.c ../sos/os_i2c_master.c ../sos/os_lib_lcd.c
 servotest_SRC := servotest.c ../sos/os_lib_servo.c
 ds1307_SRC := ds1307.c ../sos/os_i2c_master.c ../sos/os_lib_lcd.c
-bmotor_SRC := bmotor.c ../sos/os_lib_lcd.c
+bmotor_SRC := bmotor.c ../sos/os_lib_lcd.c ../sos/os_lib_servo.c
 
 
 all: readpwm.hex adxl345.hex servotest.hex ds1307.hex bmotor.hex
