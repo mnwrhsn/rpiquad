@@ -19,13 +19,13 @@
 #define AT_INT0_SENSE_LOW		(MCUCR |= ((0 << ISC01) | (0 << ISC00)))
 #define AT_INT0_SENSE_ANY		(MCUCR |= ((0 << ISC01) | (1 << ISC00)))
 #define AT_INT0_SENSE_FALL		(MCUCR |= ((1 << ISC01) | (0 << ISC00)))
-#define AT_INT0_SENSE_RISE		(MCUCR |= ((1 << ISC01) | (1 << ISC01)))
+#define AT_INT0_SENSE_RISE		(MCUCR |= ((1 << ISC01) | (1 << ISC00)))
 
 //int1 sense control
 #define AT_INT1_SENSE_LOW		(MCUCR |= ((0 << ISC11) | (0 << ISC10)))
 #define AT_INT1_SENSE_ANY		(MCUCR |= ((0 << ISC11) | (1 << ISC10)))
 #define AT_INT1_SENSE_FALL		(MCUCR |= ((1 << ISC11) | (0 << ISC10)))
-#define AT_INT1_SENSE_RISE		(MCUCR |= ((1 << ISC11) | (1 << ISC11)))
+#define AT_INT1_SENSE_RISE		(MCUCR |= ((1 << ISC11) | (1 << ISC10)))
 
 //INT2
 #define AT_INT2_SENSE_FALL		(MCUCSR |= (0 << ISC2))
@@ -55,6 +55,67 @@
 #define AT_T1_PRESCALE256		(TCCR1B |= ((1 << CS12) | (0 << CS11) | (0 << CS10)))
 #define AT_T1_PRESCALE1024		(TCCR1B |= ((1 << CS12) | (0 << CS11) | (1 << CS10)))
 
-#endif //__AVR_ATmega32__
+#elif __AVR_ATmega2560__
+
+#define AT_SET_ENABLE_INT0		{ EIMSK |= (1 << INT0); DDRD |= (0 << PD2); }
+#define AT_SET_ENABLE_INT1 		{ EIMSK |= (1 << INT1); DDRD |= (0 << PD3); }
+#define AT_SET_ENABLE_INT2		{ EIMSK |= (1 << INT2); DDRB |= (0 << PB2); }
+#define AT_SET_ENABLE_INT3		{ EIMSK |= (1 << INT3); DDRB |= (0 << PB2); }
+#define AT_SET_ENABLE_INT4		{ EIMSK |= (1 << INT4); DDRB |= (0 << PB2); }
+#define AT_SET_ENABLE_INT5		{ EIMSK |= (1 << INT5); DDRB |= (0 << PB2); }
+#define AT_SET_ENABLE_INT6		{ EIMSK |= (1 << INT6); DDRB |= (0 << PB2); }
+#define AT_SET_ENABLE_INT7		{ EIMSK |= (1 << INT7); DDRB |= (0 << PB2); }
+
+//int0 sense control
+#define AT_INT0_SENSE_LOW		(EICRA |= ((0 << ISC01) | (0 << ISC00)))
+#define AT_INT0_SENSE_ANY		(EICRA |= ((0 << ISC01) | (1 << ISC00)))
+#define AT_INT0_SENSE_FALL		(EICRA |= ((1 << ISC01) | (0 << ISC00)))
+#define AT_INT0_SENSE_RISE		(EICRA |= ((1 << ISC01) | (1 << ISC00)))
+
+//int1 sense control
+#define AT_INT1_SENSE_LOW		(EICRA |= ((0 << ISC11) | (0 << ISC10)))
+#define AT_INT1_SENSE_ANY		(EICRA |= ((0 << ISC11) | (1 << ISC10)))
+#define AT_INT1_SENSE_FALL		(EICRA |= ((1 << ISC11) | (0 << ISC10)))
+#define AT_INT1_SENSE_RISE		(EICRA |= ((1 << ISC11) | (1 << ISC10)))
+
+//int2 sense control
+#define AT_INT2_SENSE_LOW		(EICRA |= ((0 << ISC21) | (0 << ISC20)))
+#define AT_INT2_SENSE_ANY		(EICRA |= ((0 << ISC21) | (1 << ISC20)))
+#define AT_INT2_SENSE_FALL		(EICRA |= ((1 << ISC21) | (0 << ISC20)))
+#define AT_INT2_SENSE_RISE		(EICRA |= ((1 << ISC21) | (1 << ISC20)))
+
+//int3 sense control
+#define AT_INT3_SENSE_LOW		(EICRA |= ((0 << ISC31) | (0 << ISC30)))
+#define AT_INT3_SENSE_ANY		(EICRA |= ((0 << ISC31) | (1 << ISC30)))
+#define AT_INT3_SENSE_FALL		(EICRA |= ((1 << ISC31) | (0 << ISC30)))
+#define AT_INT3_SENSE_RISE		(EICRA |= ((1 << ISC31) | (1 << ISC30)))
+
+//int4 sense control
+#define AT_INT4_SENSE_LOW		(EICRB |= ((0 << ISC41) | (0 << ISC40)))
+#define AT_INT4_SENSE_ANY		(EICRB |= ((0 << ISC41) | (1 << ISC40)))
+#define AT_INT4_SENSE_FALL		(EICRB |= ((1 << ISC41) | (0 << ISC40)))
+#define AT_INT4_SENSE_RISE		(EICRB |= ((1 << ISC41) | (1 << ISC40)))
+
+//int5 sense control
+#define AT_INT5_SENSE_LOW		(EICRB |= ((0 << ISC51) | (0 << ISC50)))
+#define AT_INT5_SENSE_ANY		(EICRB |= ((0 << ISC51) | (1 << ISC50)))
+#define AT_INT5_SENSE_FALL		(EICRB |= ((1 << ISC51) | (0 << ISC50)))
+#define AT_INT5_SENSE_RISE		(EICRB |= ((1 << ISC51) | (1 << ISC50)))
+
+//int6 sense control
+#define AT_INT6_SENSE_LOW		(EICRB |= ((0 << ISC61) | (0 << ISC60)))
+#define AT_INT6_SENSE_ANY		(EICRB |= ((0 << ISC61) | (1 << ISC60)))
+#define AT_INT6_SENSE_FALL		(EICRB |= ((1 << ISC61) | (0 << ISC60)))
+#define AT_INT6_SENSE_RISE		(EICRB |= ((1 << ISC61) | (1 << ISC60)))
+
+//int7 sense control
+#define AT_INT7_SENSE_LOW		(EICRB |= ((0 << ISC71) | (0 << ISC70)))
+#define AT_INT7_SENSE_ANY		(EICRB |= ((0 << ISC71) | (1 << ISC70)))
+#define AT_INT7_SENSE_FALL		(EICRB |= ((1 << ISC71) | (0 << ISC70)))
+#define AT_INT7_SENSE_RISE		(EICRB |= ((1 << ISC71) | (1 << ISC70)))
+
+//timer0
+
+#endif
 
 #endif //__RRM_CONFIG_H_

@@ -13,8 +13,8 @@
 
 typedef struct __task_control {
 	volatile uint8_t *stacktop;	//stack top
-	uint8_t *stack;		//stack starting
-	uint8_t ssize;		//stack size
+	uint8_t *stack;			//stack starting
+	uint8_t ssize;			//stack size
 }task_control_t;
 
 static task_control_t task1;
@@ -23,7 +23,7 @@ static task_control_t task2;
 static uint8_t t1stack[MY_STACK_SIZE];
 static uint8_t t2stack[MY_STACK_SIZE];
 
-task_control_t *current = NULL;	//current runnable task
+task_control_t *current = NULL;		//current runnable task
 task_control_t *other = NULL;		//next runnable task (test code, not making use of find runnable function)
 
 typedef void (*taskf)(void *);
@@ -193,8 +193,8 @@ typedef void (*taskf)(void *);
 	__load_all_regs(); \
 }
 
-static __start(void) __attribute__((naked));
-static __start(void)
+static void __start(void) __attribute__((naked));
+static void __start(void)
 {
 	__load_ctx();
 	__asm__ volatile ("ret	\n\t" ::);	//should pop function address
