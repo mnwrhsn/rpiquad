@@ -24,6 +24,8 @@
 
 #define SERVO_T1CH2_PORT	DDRD
 #define SERVO_T1CH2_PIN		PD4
+#elif __AVR_ATmega2560__
+//pwm of atmega2560
 #endif
 
 //o/p @ oc1a (pin pd5)

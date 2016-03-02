@@ -2,14 +2,18 @@
 #define __RRM_CONFIG_H_
 
 #ifndef F_CPU
+#ifdef __AVR_ATmega32__
 #define F_CPU 8000000UL // 8 MHz clock speed
+#elif __AVR_ATmega2560__
+#define F_CPU 16000000UL // 16 MHz clock speed
+#endif
 #endif
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
-#ifdef __AVR_ATmega32__
+#ifdef __AVR_ATmega32__		//atmega 32
 
 #define AT_SET_ENABLE_INT0		{ GICR |= (1 << INT0); DDRD |= (0 << PD2); }
 #define AT_SET_ENABLE_INT1 		{ GICR |= (1 << INT1); DDRD |= (0 << PD3); }
@@ -55,7 +59,7 @@
 #define AT_T1_PRESCALE256		(TCCR1B |= ((1 << CS12) | (0 << CS11) | (0 << CS10)))
 #define AT_T1_PRESCALE1024		(TCCR1B |= ((1 << CS12) | (0 << CS11) | (1 << CS10)))
 
-#elif __AVR_ATmega2560__
+#elif __AVR_ATmega2560__	//atmega 2560
 
 #define AT_SET_ENABLE_INT0		{ EIMSK |= (1 << INT0); DDRD |= (0 << PD2); }
 #define AT_SET_ENABLE_INT1 		{ EIMSK |= (1 << INT1); DDRD |= (0 << PD3); }
