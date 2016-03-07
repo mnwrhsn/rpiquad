@@ -6,9 +6,11 @@ volatile int16_t xdata = 0;
 volatile int16_t ydata = 0;
 volatile int16_t zdata = 0;
 
+#define MPU6050_ADDR (0x68 << 1)
+
 void mpu6050_init(void)
 {
-	os_mi2c_start(0x3A);
+	os_mi2c_start(MPU6050_ADDR | I2C_WRITE);
 	os_mi2c_write(0x2D);
 	os_mi2c_write(1 << 3);
 	os_mi2c_stop();
@@ -18,10 +20,10 @@ void mpu6050_read(void)
 {
 	int16_t reg0;
 	int16_t reg1;
-	os_mi2c_start(0x3A);
+	os_mi2c_start(MPU6050_ADDR | I2C_WRITE);
 	os_mi2c_write(0x32);
 	
-	os_mi2c_start(0x3B);
+	os_mi2c_start(MPU6050_ADDR | I2C_READ);
 
 	reg0 = os_mi2c_read_ack();
 	reg1 = os_mi2c_read_ack();
