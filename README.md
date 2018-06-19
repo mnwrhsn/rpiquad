@@ -1,16 +1,23 @@
-rtquad
+rpiquad
 ======
 
-Quad based on simple AVR RTOS
+Raspberry Pi based Quadcopter flight controller
+
+Type 1:
+Only RPi based,
+1. PCA9685 for pwm control (ESC Management)
+2. Wifi for wireless control
+3. MPU6050 6DOF
+4. GPS
+
+Type 2:
+RPi + STM32 (programmable realtime unit)
+
+STM32, based on stm32f103c8t6 (blue pill)
+libopencm3 and https://github.com/ve3wwg/stm32f103c8t6.git
+
 
 Purpose:
-Understanding RTOS concept with the help of quad, seems fun!!
+Just for fun....
 
-H/W requirement:
-1. Quad H/w:
-	a. ESC (basic 50Hz, eventually support 400Hz turbo ESC)
-	b. radio (currently using Turnigy 6XS, #TODO nRF24l01)
-	c. MPU6050/ADXL345 gyro.
-2. ATmega 328/128
-	a. atleast 4 PWM channels
-	b. atleast 4 ext. interrupt i/p
+NOTE: not using atmega anymore

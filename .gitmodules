@@ -1,0 +1,3 @@
+[submodule "rtunit/libopencm3"]
+	path = rtunit/libopencm3
+	url = https://github.com/libopencm3/libopencm3.git
