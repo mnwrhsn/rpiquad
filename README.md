@@ -9,6 +9,7 @@ Only RPi based,
 2. Wifi for wireless control
 3. MPU6050 6DOF
 4. GPS
+5. wiringPi (gpio lib)
 
 Type 2:
 RPi + STM32 (programmable realtime unit)
