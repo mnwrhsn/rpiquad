@@ -1,11 +1,21 @@
 #include <stdio.h>
 #include <errno.h>
+#include <unistd.h>
+#include <stdint.h>
 
-//TODO include wiringpi
+#include <wiringPi.h>
+#include <wiringPiI2C.h>
+
+/*
+ * Jeff Rowberg:
+ * https://github.com/jrowberg/i2cdevlib
+ */
 
 #define __RPI_STANDALONE_EXAMPLE__	//compile main
 
 #define I2C_CHAN	I2C1		//stm32 channel
+
+static int i2c_fd = 0;
 
 //-------------------------------------DMP--------------------------------------------
 // MotionApps 2.0 DMP implementation, built using the MPU-6050EVB evaluation board
@@ -331,17 +341,14 @@ mpu6050_dev_t motion_dev;
 
 motion_data_t offset = { 0 };
 
+static int i2c_master_read_bytes(int fd, int reg)
+{
+	return wiringPiI2CReadReg8(fd, reg);
+}
+
 static int8_t __mpu6050_read_bytes(uint8_t reg, uint8_t len, uint8_t *data)
 {
-	struct i2c_data_t pd;
-
-	pd.i2c = I2C_CHAN;
-	pd.slave = MPU6050_I2C_ADDR;
-	pd.raddr = reg;
-	pd.len = len;
-	pd.data = data;
-
-	return i2c_master_read_bytes(&pd);
+	return i2c_master_read_bytes(i2c_fd, );
 }
 
 static int8_t __mpu6050_read_byte(uint8_t reg, uint8_t *data)
@@ -351,14 +358,6 @@ static int8_t __mpu6050_read_byte(uint8_t reg, uint8_t *data)
 
 static void __mpu6050_write_bytes(uint8_t reg, uint8_t len, uint8_t *data)
 {
-	struct i2c_data_t pd;
-
-	pd.i2c = I2C_CHAN;
-	pd.slave = MPU6050_I2C_ADDR;
-	pd.raddr = reg;
-	pd.len = len;
-	pd.data = data;
-
 	i2c_master_write_bytes(&pd);
 }
 
@@ -501,6 +500,11 @@ void mpu6050_interrupt_callback(void)
 
 int main(void)
 {
+	wiringPiSetup();
+
+	if ((i2c_fd = wiringPiI2CSetup(MPU6050_I2C_ADDR)) < 0)
+		return -EINVAL;
+
 	return 0;
 }
 #endif //__RPI_STANDALONE_EXAMPLE__

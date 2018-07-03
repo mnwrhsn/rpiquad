@@ -305,6 +305,7 @@ const prog_uchar dmpUpdates[MPU6050_DMP_UPDATES_SIZE] PROGMEM = {
 #define MPU6050_GXOFFSET 	0
 #define MPU6050_GYOFFSET 	0
 #define MPU6050_GZOFFSET 	0
+
 #define MPU6050_AXGAIN 		MPU6050_AGAIN
 #define MPU6050_AYGAIN 		MPU6050_AGAIN
 #define MPU6050_AZGAIN 		MPU6050_AGAIN
@@ -432,27 +433,16 @@ int8_t mpu6050_init(void)
 	//range config
 	__mpu6050_write_byte(MPU6050_RA_CONFIG, MPU6050_DLPF_BW_188);
 	__mpu6050_write_byte(MPU6050_RA_SMPLRT_DIV, 4);		// 1khz / (1 + 4) = 200 Hz (depends on RA_CONFIG)
-	//__mpu6050_write_byte(MPU6050_RA_GYRO_CONFIG, (MPU6dd050_GYRO_FS_2000 | MPU6050_GYRO_XG_ST | MPU6050_GYRO_YG_ST | MPU6050_GYRO_ZG_ST));
-	__mpu6050_write_byte(MPU6050_RA_GYRO_CONFIG, MPU6050_GYRO_FS);
+	__mpu6050_write_byte(MPU6050_RA_GYRO_CONFIG, (MPU6050_GYRO_FS | MPU6050_GYRO_XG_ST | MPU6050_GYRO_YG_ST | MPU6050_GYRO_ZG_ST));
+	__add_delay();
 	//TODO verify gyro self-test response
-	__add_delay();
 
-	//__mpu6050_write_byte(MPU6050_RA_ACCEL_CONFIG, (MPU6050_ACCEL_FS_8 | MPU6050_ACCEL_XA_ST | MPU6050_ACCEL_YA_ST | MPU6050_ACCEL_ZA_ST));
-	__mpu6050_write_byte(MPU6050_RA_ACCEL_CONFIG, MPU6050_ACCEL_FS);
-	//TODO verify accel self-test response
+	__mpu6050_write_byte(MPU6050_RA_ACCEL_CONFIG, (MPU6050_ACCEL_FS | MPU6050_ACCEL_XA_ST | MPU6050_ACCEL_YA_ST | MPU6050_ACCEL_ZA_ST));
 	__add_delay();
+	//TODO verify accel self-test response
+
 	__mpu6050_write_byte(MPU6050_RA_PWR_MGMT_1, MPU6050_PWR1_SLEEP_DISABLE);	//disable sleep
 
-#if 0
-	//calibrate: assumption at the time of initialization sensor is leveled.
-	offset.accel_x = 450;
-	offset.accel_y = 100;
-	offset.accel_z = -735;
-
-	offset.gyro_x = -130;
-	offset.gyro_y = -30;
-	offset.gyro_z = -35;
-#endif
 	usart_printf("Device mpu6050 initialize\n");
 
 	return 0;
