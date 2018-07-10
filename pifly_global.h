@@ -29,6 +29,7 @@ typedef struct motion_data_s {
 } motion_data_t;
 
 typedef struct motion_dev_s {
+	int devfd;
 	//IMU configuration
 	motion_data_t	motion_data;		//motion data ready for pid calculation
 } motion_dev_t;
@@ -62,6 +63,7 @@ typedef struct motor_data_s {
 } motor_data_t;
 
 typedef struct motor_dev_s {
+	int devfd;
 	motor_data_t motor_data;
 }motor_dev_t;
 

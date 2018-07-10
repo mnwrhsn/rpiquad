@@ -7,8 +7,10 @@
 #include <unistd.h>
 
 #include "pifly_global.h"
-#include "pifly_controller.h"
+#include "pifly_comm.h"
+#include "pifly_motion.h"
 #include "pifly_pid.h"
+#include "pifly_controller.h"
 
 /*
  * Timer to handle PID loop, current frequency 250Hz
@@ -21,18 +23,24 @@ static void __pid_loop_alarm_handler(int signo, siginfo_t *info, void *ctx)
 {
 	pifly_global_t *gl = info->si_value.sival_ptr;
 	printf("pifly_controller: __pid_loop_alarm_handler() start\n");
-	pid_feedback_loop(gl);
+	//1. read IMU motion data
+	//2. read flight control data (Yaw, Pitch, Roll & Throttle)
+	//3. Compute PID
+	//4. motor control
+	pifly_motor_set(&(gl->motor_dev));
+
 	printf("pifly_controller: __pid_loop_alarm_handler() end\n");
 }
 
-int pifly_controller_init(pifly_global_t *gl)
+static int __pifly_timer_event_init(pifly_global_t *gl)
 {
 	int rv = 0;
-	struct sigevent seve;		//TODO
+	struct sigevent sevent;
 	struct sigaction sact;
 
-	//TODO set sigevent
-	seve.sigev_value.sival_ptr = (void *) gl
+	sevent.sigev_notify = SIGEV_SIGNAL;
+	sevent.sigev_signo = SIGALRM;
+	sevent.sigev_value.sival_ptr = (void *) gl;
 
 	sigemptyset(&(sact.sa_mask));
 	sigaddset(&(sact.sa_mask), SIGALRM);
@@ -42,7 +50,7 @@ int pifly_controller_init(pifly_global_t *gl)
 
 	sigaction(SIGALRM, &sact, NULL);
 
-	if (timer_create(CLOCK_REALTIME, NULL, &(gl->loop_tid))) {
+	if (timer_create(CLOCK_REALTIME, &sevent, &(gl->loop_tid))) {
 		printf("pifly_controller: pifly_controller_init(), timer_create() failed\n");
 		rv = -EINVAL;
 	}
@@ -50,9 +58,49 @@ int pifly_controller_init(pifly_global_t *gl)
 	return rv;
 }
 
-int pifly_controller_start(pifly_global_t *gl)
+static void __pifly_timer_event_exit(pifly_global_t *gl)
+{
+	timer_delete(gl->loop_tid);
+}
+
+int pifly_controller_init(pifly_global_t *gl)
 {
 	int rv = 0;
+
+	if ((rv = __pifly_timer_event_init(gl)) < 0)
+		return rv;
+
+	if ((rv = imu_device_init(gl)) < 0)
+		goto imu_error;
+
+	if ((rv = pifly_pid_init(gl)) < 0)
+		goto pid_error;
+
+	if ((rv = pifly_motor_init(&(gl->motor_dev))) < 0)
+		goto motor_error;
+
+	return rv;
+
+motor_error:
+	pifly_pid_exit(gl);
+pid_error:
+	imu_device_exit(gl);
+imu_error:
+	__pifly_timer_event_exit(gl);
+
+	return rv;
+}
+
+void pifly_controller_exit(pifly_global_t *gl)
+{
+	pifly_motor_ctrl_exit(gl);
+	pifly_pid_exit(gl);
+	imu_device_exit(gl);
+	__pifly_timer_event_exit(gl);
+}
+
+void pifly_controller_start(pifly_global_t *gl)
+{
 	struct itimerspec tspec = {
 		.it_interval = {
 			.tv_sec = 0,
@@ -66,8 +114,8 @@ int pifly_controller_start(pifly_global_t *gl)
 
 	if (timer_settime(&(gl->loop_tid), 0, &tspec, NULL)) {
 		printf("pifly_controller: pifly_controller_start(), timer_settime() failed\n");
-		rv = -EINVAL;
+		exit(-EINVAL);
 	}
 
-	return rv;
+	while(1);	//point of no return
 }

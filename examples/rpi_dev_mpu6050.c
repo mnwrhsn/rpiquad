@@ -13,9 +13,13 @@
 
 #define __RPI_STANDALONE_EXAMPLE__	//compile main
 
+//---------------------------------------------------------------------------
+
 #define I2C_CHAN	I2C1		//stm32 channel
 
 static int i2c_fd = 0;
+
+//---------------------------------------------------------------------------
 
 //-------------------------------------DMP--------------------------------------------
 // MotionApps 2.0 DMP implementation, built using the MPU-6050EVB evaluation board
@@ -391,6 +395,9 @@ static void __mpu6050_write_byte(uint8_t reg, uint8_t data)
  **/
 int8_t mpu6050_init(void)
 {
+	if ((i2c_fd = wiringPiI2CSetup(MPU6050_I2C_ADDR)) < 0)
+		return -EINVAL;
+
 	//reset chip
 	__mpu6050_write_byte(MPU6050_RA_PWR_MGMT_1, (uint8_t) (1 << MPU6050_PWRMGMT1_RST_BIT));
 	__add_delay();
@@ -501,9 +508,6 @@ void mpu6050_interrupt_callback(void)
 int main(void)
 {
 	wiringPiSetup();
-
-	if ((i2c_fd = wiringPiI2CSetup(MPU6050_I2C_ADDR)) < 0)
-		return -EINVAL;
 
 	return 0;
 }

@@ -4,6 +4,8 @@
 #include "pifly_global.h"
 #include "pifly_pid.h"
 
+//keep only PID algorithm specific data
+
 int pid_feedback_init(pifly_global *gl)
 {
 }
